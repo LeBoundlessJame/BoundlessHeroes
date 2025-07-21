@@ -10,6 +10,7 @@ import com.boundless.entity.hero_action.HeroActionEntity;
 import com.boundless.util.ActionUtils;
 import com.boundless.util.HeroUtils;
 import com.boundless.util.RaycastUtils;
+import com.boundless.util.SoundUtils;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,7 +40,7 @@ public class ModAbilities {
             player.getWorld().spawnEntity(grappleEntity);
 
             heroStack.set(RobotHero.BOUND_GRAPPLE_HOOK_ID, grappleEntity.getId());
-            player.playSound(SoundEvents.ITEM_TOTEM_USE, 0.5f, 1.0f);
+            SoundUtils.playSound(player, SoundEvents.ITEM_FIRECHARGE_USE);
         } else {
             int boundHook = heroStack.getOrDefault(RobotHero.BOUND_GRAPPLE_HOOK_ID, -1);
             if (boundHook == -1) return;
@@ -49,8 +50,10 @@ public class ModAbilities {
             grappleEntity.swingBoost(player);
             grappleEntity.discard();
 
+            // Todo: maybe add a ticklogic that makes the entity persist until the player hits the ground, in which case
+            // Todo: Send the packet for updating drag and discard the entity in the consumer
             LinkedHashMap<Integer, BiConsumer<PlayerEntity, HeroActionEntity>> tasks = new LinkedHashMap<>();
-            tasks.put(10, (user, heroAction) -> {
+            tasks.put(20, (user, heroAction) -> {
                 if (user.getWorld().isClient) return;
                 ServerPlayNetworking.send((ServerPlayerEntity) user, new UpdateDragPayload(user.getUuid()));
             });
@@ -59,7 +62,7 @@ public class ModAbilities {
             ActionUtils.performAction(player, action);
 
             heroStack.set(RobotHero.BOUND_GRAPPLE_HOOK_ID, -1);
-            player.playSound(SoundEvents.ITEM_FIRECHARGE_USE, 1.0f, 1.0f);
+            SoundUtils.playSound(player, SoundEvents.ITEM_FIRECHARGE_USE);
         }
 
         heroStack.set(RobotHero.GRAPPLING, !isGrappling);

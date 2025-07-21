@@ -1,0 +1,18 @@
+{
+  "grapple_ambient": {
+    "sounds": [
+      "boundless_heroes:grapple_ambient"
+    ]
+  },
+  "grapple_hook_initiate": {
+    "sounds": [
+      "boundless_heroes:grapple_hook_initiate"
+    ]
+  },
+  "grapple_impact": {
+    "sounds": [
+      "boundless_heroes:grapple_impact"
+    ]
+  }
+}
+
