@@ -3,15 +3,18 @@ package com.boundess_heroes.abilities;
 import com.boundess_heroes.BoundlessHeroes;
 import com.boundess_heroes.entity.GrappleEntity;
 import com.boundess_heroes.hero.RobotHero;
+import com.boundess_heroes.networking.UpdateDragPayload;
 import com.boundless.ability.Ability;
 import com.boundless.action.Action;
 import com.boundless.entity.hero_action.HeroActionEntity;
 import com.boundless.util.ActionUtils;
 import com.boundless.util.HeroUtils;
 import com.boundless.util.RaycastUtils;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Vec3d;
@@ -38,13 +41,6 @@ public class ModAbilities {
             heroStack.set(RobotHero.BOUND_GRAPPLE_HOOK_ID, grappleEntity.getId());
             player.playSound(SoundEvents.ITEM_TOTEM_USE, 0.5f, 1.0f);
         } else {
-            LinkedHashMap<Integer, BiConsumer<PlayerEntity, HeroActionEntity>> tasks = new LinkedHashMap<>();
-            tasks.put(10, (user, heroAction) -> {
-                System.out.println(user.getWorld());
-                user.setNoDrag(false);
-                System.out.println(user.hasNoDrag());
-            });
-
             int boundHook = heroStack.getOrDefault(RobotHero.BOUND_GRAPPLE_HOOK_ID, -1);
             if (boundHook == -1) return;
 
@@ -52,6 +48,13 @@ public class ModAbilities {
             if (grappleEntity == null) return;
             grappleEntity.swingBoost(player);
             grappleEntity.discard();
+
+            LinkedHashMap<Integer, BiConsumer<PlayerEntity, HeroActionEntity>> tasks = new LinkedHashMap<>();
+            tasks.put(10, (user, heroAction) -> {
+                if (user.getWorld().isClient) return;
+                ServerPlayNetworking.send((ServerPlayerEntity) user, new UpdateDragPayload(user.getUuid()));
+            });
+
             Action action = Action.builder().scheduledTasks(tasks).hitboxWidthZ(0).hitboxWidthX(0).hitboxHeight(0).build();
             ActionUtils.performAction(player, action);
 

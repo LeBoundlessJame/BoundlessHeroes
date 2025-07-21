@@ -1,6 +1,7 @@
 package com.boundess_heroes.entity;
 
 import com.boundess_heroes.registry.EntityRegistry;
+import lombok.Setter;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -60,7 +61,6 @@ public class GrappleEntity extends PersistentProjectileEntity {
 
     public void swingBoost(PlayerEntity player) {
         player.setVelocity(player.getVelocity().multiply(BOOST_X_MUL, BOOST_Y_MUL, BOOST_Z_MUL));
-        this.discard();
     }
 
     public void swingLogic(PlayerEntity player) {
