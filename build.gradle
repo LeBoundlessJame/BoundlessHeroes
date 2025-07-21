@@ -11,7 +11,6 @@ base {
 }
 
 repositories {
-	mavenLocal()
 	mavenCentral()
 	maven {
 		url = "https://api.modrinth.com/maven"
@@ -24,6 +23,9 @@ repositories {
 	maven {
 		name = "FzzyMaven"
 		url = uri("https://maven.fzzyhmstrs.me/")
+	}
+	maven {
+		url "https://cursemaven.com"
 	}
 }
 
@@ -41,13 +43,14 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation "com.boundless:boundless:1.0.0"
 
 	modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}")
 	modImplementation "mod.azure.azurelib:azurelib-fabric-${project.minecraft_version}:${project.azurelib_version}"
 	modImplementation "maven.modrinth:aaa-particles:1.21-1.4.9-fabric"
 	modImplementation "maven.modrinth:architectury-api:13.0.8+fabric"
 	modImplementation "me.fzzyhmstrs:fzzy_config:${project.fzzy_config_version}"
+
+	modImplementation "curse.maven:boundless-api-1310831:6792951"
 }
 
 processResources {
