@@ -36,12 +36,11 @@ public class ModAbilities {
         float randomPitch = MathHelper.nextBetween(player.getRandom(), 0.9f, 1.2f);
 
         if (!isGrappling) {
+            BlockHitResult blockHitResult = RaycastUtils.blockRaycast(player, 128);
+            if (blockHitResult == null) return;
             SoundFXUtils.playSound(player, SoundRegistry.GRAPPLE_INITIATE, 1.0f, randomPitch);
             SoundFXUtils.playSound(player, SoundRegistry.GRAPPLE_IMPACT, 1.0f, randomPitch);
             SoundFXUtils.playSound(player, SoundRegistry.GRAPPLE_AMBIENT, 1.0f, randomPitch);
-
-            BlockHitResult blockHitResult = RaycastUtils.blockRaycast(player, 128);
-            if (blockHitResult == null) return;
 
             GrappleEntity grappleEntity = new GrappleEntity(player, player.getWorld());
             grappleEntity.setVelocity(0, 0, 0);
@@ -58,20 +57,28 @@ public class ModAbilities {
             if (grappleEntity == null) return;
             grappleEntity.swingBoost(player);
             grappleEntity.discard();
+            SoundFXUtils.playSound(player, SoundRegistry.GRAPPLE_AMBIENT, 1.0f, MathHelper.nextBetween(player.getRandom(), 1.1f, 1.3f));
 
             // Todo: maybe add a ticklogic that makes the entity persist until the player hits the ground, in which case
             // Todo: Send the packet for updating drag and discard the entity in the consumer
             LinkedHashMap<Integer, BiConsumer<PlayerEntity, HeroActionEntity>> tasks = new LinkedHashMap<>();
-            tasks.put(0, (user, heroAction) -> {
-                SoundFXUtils.playSound(user, SoundRegistry.GRAPPLE_AMBIENT, 1.0f, MathHelper.nextBetween(player.getRandom(), 1.1f, 1.3f));
-            });
+            int maxLifetime = 10 * 20;
 
-            tasks.put(20, (user, heroAction) -> {
+            BiConsumer<PlayerEntity, HeroActionEntity> customTickLogic = (user, heroAction) -> {
+                if (user.getWorld().isClient) return;
+                if (user.isOnGround()) {
+                    ServerPlayNetworking.send((ServerPlayerEntity) user, new UpdateDragPayload(user.getUuid()));
+                    heroAction.discard();
+                }
+            };
+
+            tasks.put(maxLifetime, (user, heroAction) -> {
                 if (user.getWorld().isClient) return;
                 ServerPlayNetworking.send((ServerPlayerEntity) user, new UpdateDragPayload(user.getUuid()));
+                heroAction.discard();
             });
 
-            Action action = Action.builder().scheduledTasks(tasks).hitboxWidthZ(0).hitboxWidthX(0).hitboxHeight(0).build();
+            Action action = Action.builder().scheduledTasks(tasks).customTickLogic(customTickLogic).hitboxWidthZ(0).hitboxWidthX(0).hitboxHeight(0).build();
             ActionUtils.performAction(player, action);
 
             heroStack.set(RobotHero.BOUND_GRAPPLE_HOOK_ID, -1);
