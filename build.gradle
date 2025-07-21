@@ -12,6 +12,8 @@ base {
 
 repositories {
 	mavenCentral()
+	mavenLocal()
+
 	maven {
 		url = "https://api.modrinth.com/maven"
 	}
@@ -50,7 +52,7 @@ dependencies {
 	modImplementation "maven.modrinth:architectury-api:13.0.8+fabric"
 	modImplementation "me.fzzyhmstrs:fzzy_config:${project.fzzy_config_version}"
 
-	modImplementation "curse.maven:boundless-api-1310831:6792951"
+	modImplementation "com.boundless:boundless:1.0.1"
 }
 
 processResources {
