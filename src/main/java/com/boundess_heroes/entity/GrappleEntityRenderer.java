@@ -1,15 +1,11 @@
 package com.boundess_heroes.entity;
 
-import mod.azure.azurelib.core.object.Axis;
-import mod.azure.azurelib.rewrite.render.entity.AzEntityLeashRenderUtil;
-import mod.azure.azurelib.rewrite.render.entity.AzEntityRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -17,15 +13,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LightType;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GrappleEntityRenderer extends EntityRenderer<PersistentProjectileEntity> {
-    public static final int ROPE_PIECE_COUNT = 96;
-
     // Todo: Replace with proper checks / conditions later
     @Override
     public boolean shouldRender(PersistentProjectileEntity mobEntity, Frustum frustum, double d, double e, double f) {

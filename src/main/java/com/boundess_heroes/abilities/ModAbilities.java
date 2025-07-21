@@ -4,6 +4,8 @@ import com.boundess_heroes.BoundlessHeroes;
 import com.boundess_heroes.entity.GrappleEntity;
 import com.boundess_heroes.hero.RobotHero;
 import com.boundess_heroes.networking.UpdateDragPayload;
+import com.boundess_heroes.registry.SoundRegistry;
+import com.boundess_heroes.util.SoundFXUtils;
 import com.boundless.ability.Ability;
 import com.boundless.action.Action;
 import com.boundless.entity.hero_action.HeroActionEntity;
@@ -16,8 +18,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.LinkedHashMap;
@@ -28,6 +33,10 @@ public class ModAbilities {
         if (player.getWorld().isClient) return;
         ItemStack heroStack = HeroUtils.getHeroStack(player);
         boolean isGrappling = heroStack.getOrDefault(RobotHero.GRAPPLING, false);
+        float randomPitch = MathHelper.nextBetween(player.getRandom(), 0.9f, 1.2f);
+
+        SoundFXUtils.playSound(player, SoundRegistry.GRAPPLE_IMPACT, 0.5f, randomPitch);
+        SoundFXUtils.playSound(player, SoundRegistry.GRAPPLE_AMBIENT, 1.0f, randomPitch);
 
         if (!isGrappling) {
             BlockHitResult blockHitResult = RaycastUtils.blockRaycast(player, 128);
@@ -40,7 +49,6 @@ public class ModAbilities {
             player.getWorld().spawnEntity(grappleEntity);
 
             heroStack.set(RobotHero.BOUND_GRAPPLE_HOOK_ID, grappleEntity.getId());
-            SoundUtils.playSound(player, SoundEvents.ITEM_FIRECHARGE_USE);
         } else {
             int boundHook = heroStack.getOrDefault(RobotHero.BOUND_GRAPPLE_HOOK_ID, -1);
             if (boundHook == -1) return;
@@ -53,6 +61,10 @@ public class ModAbilities {
             // Todo: maybe add a ticklogic that makes the entity persist until the player hits the ground, in which case
             // Todo: Send the packet for updating drag and discard the entity in the consumer
             LinkedHashMap<Integer, BiConsumer<PlayerEntity, HeroActionEntity>> tasks = new LinkedHashMap<>();
+            tasks.put(0, (user, heroAction) -> {
+                SoundFXUtils.playSound(user, SoundRegistry.GRAPPLE_AMBIENT, 1.0f, randomPitch);
+            });
+
             tasks.put(20, (user, heroAction) -> {
                 if (user.getWorld().isClient) return;
                 ServerPlayNetworking.send((ServerPlayerEntity) user, new UpdateDragPayload(user.getUuid()));
@@ -62,7 +74,6 @@ public class ModAbilities {
             ActionUtils.performAction(player, action);
 
             heroStack.set(RobotHero.BOUND_GRAPPLE_HOOK_ID, -1);
-            SoundUtils.playSound(player, SoundEvents.ITEM_FIRECHARGE_USE);
         }
 
         heroStack.set(RobotHero.GRAPPLING, !isGrappling);

@@ -15,7 +15,6 @@ public class RobotHero extends Hero {
     public static ComponentType<Boolean> GRAPPLING = DataComponentRegistry.registerComponent("grappling",builder -> ComponentType.<Boolean>builder().codec(Codec.BOOL));
     public static ComponentType<Integer> BOUND_GRAPPLE_HOOK_ID = DataComponentRegistry.registerComponent("bound_grapple_hook_id", builder -> ComponentType.<Integer>builder().codec(Codec.INT));
 
-
     public RobotHero() {
         AbilityLoadout loadout = AbilityLoadout.builder()
                 .ability("key.boundless.ability_two", MeleeCombatAbilities.DODGE)

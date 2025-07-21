@@ -3,6 +3,7 @@ package com.boundess_heroes;
 import com.boundess_heroes.registry.EntityRegistry;
 import com.boundess_heroes.registry.HeroRegistry;
 import com.boundess_heroes.registry.PayloadRegistry;
+import com.boundess_heroes.registry.SoundRegistry;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
@@ -18,6 +19,7 @@ public class BoundlessHeroes implements ModInitializer {
 		HeroRegistry.initialize();
 		EntityRegistry.initialize();
 		PayloadRegistry.registerPayloads();
+		SoundRegistry.initialize();
 		LOGGER.info("Boundless Heroes Initialized!");
 	}
 
