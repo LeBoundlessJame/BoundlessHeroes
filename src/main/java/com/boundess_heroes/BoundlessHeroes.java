@@ -20,4 +20,8 @@ public class BoundlessHeroes implements ModInitializer {
 	public static Identifier identifier(String name) {
 		return Identifier.of(MOD_ID, name);
 	}
+
+	public static Identifier hudPNG(String name) {
+		return identifier("textures/gui/sprites/hud/" + name + ".png");
+	}
 }
