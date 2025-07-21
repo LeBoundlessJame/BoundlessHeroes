@@ -1,17 +1,26 @@
 {
   "grapple_ambient": {
     "sounds": [
-      "boundless_heroes:grapple_ambient"
+      {
+        "name": "boundless_heroes:grapple_ambient",
+        "attenuation_distance": 48
+      }
     ]
   },
   "grapple_initiate": {
     "sounds": [
-      "boundless_heroes:grapple_initiate"
+      {
+        "name": "boundless_heroes:grapple_initiate",
+        "attenuation_distance": 48
+      }
     ]
   },
   "grapple_impact": {
     "sounds": [
-      "boundless_heroes:grapple_impact"
+      {
+        "name": "boundless_heroes:grapple_impact",
+        "attenuation_distance": 48
+      }
     ]
   }
 }
