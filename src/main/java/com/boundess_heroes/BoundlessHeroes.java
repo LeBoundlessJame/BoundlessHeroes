@@ -1,5 +1,6 @@
 package com.boundess_heroes;
 
+import com.boundess_heroes.registry.EntityRegistry;
 import com.boundess_heroes.registry.HeroRegistry;
 import net.fabricmc.api.ModInitializer;
 
@@ -14,6 +15,7 @@ public class BoundlessHeroes implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		HeroRegistry.initialize();
+		EntityRegistry.initialize();
 		LOGGER.info("Boundless Heroes Initialized!");
 	}
 

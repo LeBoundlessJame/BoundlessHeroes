@@ -8,6 +8,7 @@ import com.boundless.hero.api.HeroData;
 import com.boundless.registry.DataComponentRegistry;
 import com.mojang.serialization.Codec;
 import net.minecraft.component.ComponentType;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class RobotHero extends Hero {
     public static ComponentType<Boolean> GRAPPLING = DataComponentRegistry.registerComponent("grappling",builder -> ComponentType.<Boolean>builder().codec(Codec.BOOL));

@@ -18,6 +18,9 @@
 		"main": [
 			"com.boundess_heroes.BoundlessHeroes"
 		],
+		"client": [
+			"com.boundess_heroes.BoundlessHeroesClient"
+		],
 		"fabric-datagen": [
 			"com.boundess_heroes.BoundlessHeroesDataGenerator"
 		]
