@@ -1,7 +1,6 @@
 package com.boundess_heroes.entity;
 
 import com.boundess_heroes.registry.EntityRegistry;
-import lombok.Setter;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -103,5 +102,10 @@ public class GrappleEntity extends PersistentProjectileEntity {
         } else if (!player.isOnGround()) {
             player.setNoDrag(true);
         }
+    }
+
+    @Override
+    protected boolean tryPickup(PlayerEntity player) {
+        return false;
     }
 }
