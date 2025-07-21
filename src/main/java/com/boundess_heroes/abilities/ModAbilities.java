@@ -35,10 +35,11 @@ public class ModAbilities {
         boolean isGrappling = heroStack.getOrDefault(RobotHero.GRAPPLING, false);
         float randomPitch = MathHelper.nextBetween(player.getRandom(), 0.9f, 1.2f);
 
-        SoundFXUtils.playSound(player, SoundRegistry.GRAPPLE_IMPACT, 0.5f, randomPitch);
-        SoundFXUtils.playSound(player, SoundRegistry.GRAPPLE_AMBIENT, 1.0f, randomPitch);
-
         if (!isGrappling) {
+            SoundFXUtils.playSound(player, SoundRegistry.GRAPPLE_INITIATE, 1.0f, randomPitch);
+            SoundFXUtils.playSound(player, SoundRegistry.GRAPPLE_IMPACT, 1.0f, randomPitch);
+            SoundFXUtils.playSound(player, SoundRegistry.GRAPPLE_AMBIENT, 1.0f, randomPitch);
+
             BlockHitResult blockHitResult = RaycastUtils.blockRaycast(player, 128);
             if (blockHitResult == null) return;
 
@@ -62,7 +63,7 @@ public class ModAbilities {
             // Todo: Send the packet for updating drag and discard the entity in the consumer
             LinkedHashMap<Integer, BiConsumer<PlayerEntity, HeroActionEntity>> tasks = new LinkedHashMap<>();
             tasks.put(0, (user, heroAction) -> {
-                SoundFXUtils.playSound(user, SoundRegistry.GRAPPLE_AMBIENT, 1.0f, randomPitch);
+                SoundFXUtils.playSound(user, SoundRegistry.GRAPPLE_AMBIENT, 1.0f, MathHelper.nextBetween(player.getRandom(), 1.1f, 1.3f));
             });
 
             tasks.put(20, (user, heroAction) -> {
