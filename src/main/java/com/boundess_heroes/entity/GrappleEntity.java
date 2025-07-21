@@ -18,7 +18,6 @@ public class GrappleEntity extends PersistentProjectileEntity {
     private boolean attachedToBlock = false;
     private float ropeLength = 0.0F;
     private Vec3d prevPos = null;
-    private boolean shouldCeaseSwing = false;
 
     public GrappleEntity(LivingEntity owner, World world) {
         super(EntityRegistry.GRAPPLE_ENTITY, owner, world, ItemStack.EMPTY, Items.BLACK_WOOL.getDefaultStack());
@@ -61,18 +60,10 @@ public class GrappleEntity extends PersistentProjectileEntity {
 
     public void swingBoost(PlayerEntity player) {
         player.setVelocity(player.getVelocity().multiply(BOOST_X_MUL, BOOST_Y_MUL, BOOST_Z_MUL));
-        shouldCeaseSwing = true;
-        discard();
+        this.discard();
     }
 
     public void swingLogic(PlayerEntity player) {
-        if (player.isSneaking()) {
-            swingBoost(player);
-            return;
-        }
-
-        if (shouldCeaseSwing) return;
-
         if (prevPos == null) {
             prevPos = player.getPos();
         }
