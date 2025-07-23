@@ -20,7 +20,7 @@ public class GrappleEntity extends PersistentProjectileEntity {
     private Vec3d prevPos = null;
 
     public GrappleEntity(LivingEntity owner, World world) {
-        super(EntityRegistry.GRAPPLE_ENTITY, owner, world, ItemStack.EMPTY, Items.BLACK_WOOL.getDefaultStack());
+        super(EntityRegistry.GRAPPLE_ENTITY, owner, world, Items.BLACK_WOOL.getDefaultStack(), Items.BLACK_WOOL.getDefaultStack());
         this.setNoGravity(true);
         this.setDamage(0);
     }
