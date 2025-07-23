@@ -5,7 +5,6 @@ import com.boundess_heroes.registry.HeroRegistry;
 import com.boundess_heroes.registry.PayloadRegistry;
 import com.boundess_heroes.registry.SoundRegistry;
 import net.fabricmc.api.ModInitializer;
-
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

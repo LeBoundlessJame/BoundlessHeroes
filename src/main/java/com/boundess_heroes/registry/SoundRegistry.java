@@ -1,7 +1,6 @@
 package com.boundess_heroes.registry;
 
 import com.boundess_heroes.BoundlessHeroes;
-import com.boundless.BoundlessAPI;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
