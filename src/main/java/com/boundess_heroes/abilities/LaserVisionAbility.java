@@ -10,7 +10,7 @@ public class LaserVisionAbility {
         ParticleEmitterInfo laserParticle = ParticleEmitterInfo.create(player.getWorld(), BoundlessHeroes.identifier("laser"), BoundlessHeroes.identifier("laser_" + player.getName()));
         laserParticle.entitySpaceRelativePosition(-0.15f, player.getEyeHeight(player.getPose()), 0);
         laserParticle.bindOnEntity(player);
-        laserParticle.rotation((float) Math.toRadians(player.getPitch() * -1), (float) Math.toRadians(player.getYaw() -1), 0);
+        //laserParticle.rotation((float) Math.toRadians(player.getPitch() * -1), (float) Math.toRadians(player.getYaw() -1), 0);
         laserParticle.scale(0.1f);
         laserParticle.parameter(0, 5);
         AAALevel.addParticle(player.getWorld(), laserParticle);
