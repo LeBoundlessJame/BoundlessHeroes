@@ -1,5 +1,6 @@
 package com.boundess_heroes.hero;
 
+import com.boundess_heroes.BoundlessHeroes;
 import com.boundess_heroes.abilities.ModAbilities;
 import com.boundless.ability.AbilityLoadout;
 import com.boundless.ability.reusable_abilities.MeleeCombatAbilities;
@@ -17,7 +18,6 @@ public class RobotHero extends Hero {
 
     public RobotHero() {
         AbilityLoadout loadout = AbilityLoadout.builder()
-                .ability("key.boundless.ability_two", MeleeCombatAbilities.DODGE)
                 .ability("key.attack", ModAbilities.GRAPPLE)
                 .build();
 
@@ -27,6 +27,7 @@ public class RobotHero extends Hero {
                 .builder()
                 .name("robot_hero")
                 .displayName("Robot Hero")
+                .textureIdentifier(BoundlessHeroes.textureID("robot_hero"))
                 .defaultAbilityLoadout(ABILITY_LOADOUTS.get("LOADOUT_1"))
                 .build();
 
