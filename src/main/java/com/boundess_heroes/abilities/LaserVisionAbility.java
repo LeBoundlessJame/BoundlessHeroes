@@ -21,7 +21,7 @@ public class LaserVisionAbility {
         ParticleEmitterInfo laserParticle = ParticleEmitterInfo.create(player.getWorld(), BoundlessHeroes.identifier("laser"), BoundlessHeroes.identifier("laser_" + player.getName()));
         laserParticle.scale(1.0f);
         laserParticle.position(player.getEyePos().add(0.1f, -0.05f, 0));
-        laserParticle.parameter(0, 5);
+        laserParticle.parameter(0, 0.3f);
         AAALevel.addParticle(player.getWorld(), laserParticle);
 
         LinkedHashMap<Integer, BiConsumer<PlayerEntity, HeroActionEntity>> tasks = new LinkedHashMap<>();
