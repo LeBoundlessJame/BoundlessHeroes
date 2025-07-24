@@ -19,7 +19,8 @@ import java.util.function.BiConsumer;
 public class LaserVisionAbility {
     public static void laserVisionLogic(PlayerEntity player) {
         ParticleEmitterInfo laserParticle = ParticleEmitterInfo.create(player.getWorld(), BoundlessHeroes.identifier("laser"), BoundlessHeroes.identifier("laser_" + player.getName()));
-        laserParticle.scale(0.1f);
+        laserParticle.scale(1.0f);
+        laserParticle.position(player.getEyePos().add(0.1f, -0.05f, 0));
         laserParticle.parameter(0, 5);
         AAALevel.addParticle(player.getWorld(), laserParticle);
 
