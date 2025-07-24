@@ -13,6 +13,8 @@ import mod.chloeprime.aaaparticles.client.registry.EffectRegistry;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.LinkedHashMap;
 import java.util.function.BiConsumer;
@@ -26,7 +28,13 @@ public class LaserVisionAbility {
         AAALevel.addParticle(player.getWorld(), laserParticle);
 
         LinkedHashMap<Integer, BiConsumer<PlayerEntity, HeroActionEntity>> tasks = new LinkedHashMap<>();
-        tasks.put(1000, (user, heroAction) -> heroAction.discard());
+        tasks.put(1000, (user, heroAction) -> {
+            var effect = EffectRegistry.get(BoundlessHeroes.identifier("laser"));
+            if (effect == null) return;
+            effect.getNamedEmitter(ParticleEmitter.Type.WORLD, BoundlessHeroes.identifier("laser_" + user.getName())).ifPresent(
+                    particleEmitter -> particleEmitter.sendTrigger(0));
+            heroAction.discard();
+        });
 
         BiConsumer<PlayerEntity, HeroActionEntity> tickLogic = (user, heroAction) -> {
             if (player.age % 2 != 0) return;
@@ -49,21 +57,18 @@ public class LaserVisionAbility {
             var effect = EffectRegistry.get(BoundlessHeroes.identifier("laser"));
             if (effect == null) return;
 
-            float interpolatedPitch = entity.prevPitch + (entity.getPitch() - entity.prevPitch) * tickDelta;
-            float interpolatedHeadYaw = entity.prevHeadYaw + (entity.getHeadYaw() - entity.prevHeadYaw) * tickDelta;
+            Vec3d eyePos = entity.getCameraPosVec(tickDelta).add(-0.15f, -0.05f, 0);
+            float lerpedX = (float) eyePos.x;
+            float lerpedY = (float) eyePos.y;
+            float lerpedZ = (float) eyePos.z;
 
-            float lerpedX = (float) (entity.prevX + (entity.getEyePos().x - entity.prevX) * tickDelta);
-            float lerpedY = (float) (entity.getEyeHeight(entity.getPose()) + (entity.prevY + (entity.getY() - entity.prevY) * tickDelta));
-            float lerpedZ = (float) (entity.prevZ + (entity.getEyePos().z - entity.prevZ) * tickDelta);
+            float pitch = (float) Math.toRadians(MathHelper.lerp(tickDelta, entity.prevPitch, entity.getPitch()));
+            float yaw = (float) Math.toRadians(-MathHelper.lerp(tickDelta, entity.prevHeadYaw, entity.getHeadYaw()));
 
             effect.getNamedEmitter(ParticleEmitter.Type.WORLD, BoundlessHeroes.identifier("laser_" + entity.getName()))
                     .ifPresent((particleEmitter -> {
                         particleEmitter.setPosition(lerpedX, lerpedY, lerpedZ);
-                        particleEmitter.setRotation(
-                                (float) Math.toRadians(interpolatedPitch),
-                                (float) Math.toRadians(-interpolatedHeadYaw),
-                                0f
-                        );
+                        particleEmitter.setRotation(pitch, yaw, 0);
                     }));
         }
     }
