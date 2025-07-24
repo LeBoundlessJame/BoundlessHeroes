@@ -35,7 +35,7 @@ public class LaserVisionAbility {
             }
         };
 
-        Action laserAction = Action.builder().customTickLogic(tickLogic).scheduledTasks(tasks).build();
+        Action laserAction = Action.builder().customTickLogic(tickLogic).scheduledTasks(tasks).hitboxHeight(0).hitboxWidthX(0).hitboxWidthZ(0).build();
         ActionUtils.performAction(player, laserAction);
     }
 }
