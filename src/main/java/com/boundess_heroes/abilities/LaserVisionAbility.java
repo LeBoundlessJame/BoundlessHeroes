@@ -10,11 +10,13 @@ import mod.chloeprime.aaaparticles.api.client.effekseer.ParticleEmitter;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import mod.chloeprime.aaaparticles.client.registry.EffectRegistry;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import org.joml.Quaternionf;
 
 import java.util.LinkedHashMap;
 import java.util.function.BiConsumer;
@@ -23,7 +25,9 @@ public class LaserVisionAbility {
     public static void laserVisionLogic(PlayerEntity player) {
         ParticleEmitterInfo laserParticle = ParticleEmitterInfo.create(player.getWorld(), BoundlessHeroes.identifier("laser"), BoundlessHeroes.identifier("laser_" + player.getName()));
         laserParticle.scale(1.0f);
-        //laserParticle.position(player.getEyePos().add(0.1f, -0.05f, 0));
+        laserParticle.bindOnEntity(player);
+        laserParticle.useEntityHeadSpace(true);
+        laserParticle.entitySpaceRelativePosition(-0.1f, -0.025f * -6, 0f);
         laserParticle.parameter(0, 0.3f);
         AAALevel.addParticle(player.getWorld(), laserParticle);
 
@@ -57,18 +61,9 @@ public class LaserVisionAbility {
             var effect = EffectRegistry.get(BoundlessHeroes.identifier("laser"));
             if (effect == null) return;
 
-            Vec3d eyePos = entity.getCameraPosVec(tickDelta).add(-0.15f, -0.05f, 0);
-            float lerpedX = (float) eyePos.x;
-            float lerpedY = (float) eyePos.y;
-            float lerpedZ = (float) eyePos.z;
-
-            float pitch = (float) Math.toRadians(MathHelper.lerp(tickDelta, entity.prevPitch, entity.getPitch()));
-            float yaw = (float) Math.toRadians(-MathHelper.lerp(tickDelta, entity.prevHeadYaw, entity.getHeadYaw()));
-
             effect.getNamedEmitter(ParticleEmitter.Type.WORLD, BoundlessHeroes.identifier("laser_" + entity.getName()))
                     .ifPresent((particleEmitter -> {
-                        particleEmitter.setPosition(lerpedX, lerpedY, lerpedZ);
-                        particleEmitter.setRotation(pitch, yaw, 0);
+
                     }));
         }
     }
