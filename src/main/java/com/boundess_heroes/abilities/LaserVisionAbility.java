@@ -1,6 +1,7 @@
 package com.boundess_heroes.abilities;
 
 import com.boundess_heroes.BoundlessHeroes;
+import com.boundess_heroes.rendering.LaserRenderingLogic;
 import com.boundless.action.Action;
 import com.boundless.client.RenderParameters;
 import com.boundless.entity.hero_action.HeroActionEntity;
@@ -55,6 +56,9 @@ public class LaserVisionAbility {
 
     public static void laserRenderLogic(HeroActionEntity heroAction, RenderParameters renderParameters) {
         PlayerEntity entity = (PlayerEntity) heroAction.getOwner();
+        //Vec3d offset = new Vec3d(-0.1f, -0.025f * -6, 0f);
+        Vec3d offset = new Vec3d(-0.1f, -0.025f, 0f);
+
         float tickDelta = renderParameters.tickDelta;
 
         if (entity != null) {
@@ -63,7 +67,7 @@ public class LaserVisionAbility {
 
             effect.getNamedEmitter(ParticleEmitter.Type.WORLD, BoundlessHeroes.identifier("laser_" + entity.getName()))
                     .ifPresent((particleEmitter -> {
-
+                        LaserRenderingLogic.renderBoundEffect(entity,particleEmitter, offset, new Vec3d(0, 0, 0), tickDelta, true);
                     }));
         }
     }
