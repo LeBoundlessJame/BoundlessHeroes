@@ -17,7 +17,6 @@ public class RobotHero extends Hero {
     public RobotHero() {
         AbilityLoadout loadout = AbilityLoadout.builder()
                 .ability("key.attack", ModAbilities.GRAPPLE)
-                .ability("key.boundless.ability_one", ModAbilities.LASER_VISION)
                 .build();
 
         ABILITY_LOADOUTS.put("LOADOUT_1", loadout);

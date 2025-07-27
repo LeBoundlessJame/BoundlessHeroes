@@ -10,9 +10,12 @@ public class ModAbilities {
             .abilityID(BoundlessHeroes.identifier("grapple"))
             .abilityIcon(BoundlessHeroes.hudPNG("grapple")).build();
 
+    /*
     public static Ability LASER_VISION = Ability.builder()
             .abilityConsumer(LaserVisionAbility::laserVisionLogic)
             .cooldown(10)
             .abilityID(BoundlessHeroes.identifier("laser_vision"))
             .abilityIcon(BoundlessHeroes.hudPNG("red")).build();
+
+     */
 }
