@@ -52,7 +52,7 @@ dependencies {
 	modImplementation "maven.modrinth:architectury-api:13.0.8+fabric"
 	modImplementation "me.fzzyhmstrs:fzzy_config:${project.fzzy_config_version}"
 
-	modImplementation "com.boundless:boundless:1.0.3"
+	modImplementation "com.boundless:boundless:1.0.4"
 	//modImplementation "curse.maven:boundless-api-1310831:6803891"
 
 	compileOnly 'org.projectlombok:lombok:1.18.34'
